@@ -5,4 +5,4 @@ pydeck
 streamlit
 hashlib
 rsa
-pycryptodome-3.20.0
+pycryptodome
