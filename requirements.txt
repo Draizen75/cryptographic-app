@@ -3,5 +3,5 @@ numpy
 pandas
 pydeck
 streamlit
-rsa-4.9
+rsa
 pycryptodome-3.20.0
