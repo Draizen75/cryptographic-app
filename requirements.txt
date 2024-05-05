@@ -3,8 +3,6 @@ numpy
 pandas
 pydeck
 streamlit
-hashlib
-cryptography
 pyasn1-0.6.0 
 rsa-4.9
 pycryptodome-3.20.0
