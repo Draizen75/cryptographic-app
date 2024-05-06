@@ -5,6 +5,9 @@ st.set_page_config(
         page_title="Symmetric Encryption",
         page_icon="🔑",
     )
+
+input_container = st.container(border=True)
+
 with input_container:
     st.write("# Welcome To Symmetric Encryption")
 
