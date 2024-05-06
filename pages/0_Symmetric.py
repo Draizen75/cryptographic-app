@@ -67,17 +67,17 @@ if encryption_type == "XOR Cipher":
                     )
             else:  # If uploaded file is not encrypted
                 key = bytes(st.text_area("Key:").encode())
-                # if st.button("Encrypt"):
-                file_contents = uploaded_file.read()
-                encrypted_file_contents = xor_encrypt(file_contents, key)
-                st.write("File Encrypted")
-        
-                st.download_button(
-                    label="Download Encrypted File",
-                    data=bytes(encrypted_file_contents),  # Convert to bytes
-                    file_name=f"{uploaded_file.name}.enc",
-                    mime="application/octet-stream"
-                )
+                if st.button("Encrypt"):
+                    file_contents = uploaded_file.read()
+                    encrypted_file_contents = xor_encrypt(file_contents, key)
+                    st.write("File Encrypted")
+            
+                    st.download_button(
+                        label="Download Encrypted File",
+                        data=bytes(encrypted_file_contents),  # Convert to bytes
+                        file_name=f"{uploaded_file.name}.enc",
+                        mime="application/octet-stream"
+                    )
 
 elif encryption_type == "Caesar Cipher":
     def encrypt_decrypt_text(text, shift_keys, ifdecrypt):
