@@ -2,6 +2,11 @@ import streamlit as st
 import rsa
 from Crypto.Util import number
 
+st.set_page_config(
+        page_title="Asymmetric Encryption",
+        page_icon="🏷️",
+    )
+
 st.write("# Welcome To Asymmetric Encryption🔒🔒🔒")
 
 encryption_type = st.selectbox("Select Encryption Algorithm", ["RSA", "Diffie-Hellman"])

@@ -1,6 +1,10 @@
 import streamlit as st
 import os
 
+st.set_page_config(
+        page_title="Symmetric Encryption",
+        page_icon="🔑",
+    )
 
 st.write("# Welcome To Symmetric Encryption")
 

@@ -1,6 +1,11 @@
 import streamlit as st
 import hashlib
 
+st.set_page_config(
+        page_title="Hashing Encryption",
+        page_icon="💼",
+    )
+
 st.write("# Welcome To Hashing🔒🔒🔒")
 
 hash_type = st.selectbox("Select Hashing Algorithm", ["MD5", "SHA1", "SHA256", "SHA512"])
