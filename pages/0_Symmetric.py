@@ -75,7 +75,7 @@ with input_container:
                         with col1:
                             file_contents = uploaded_file.read()
                             encrypted_file_contents = xor_encrypt(file_contents, key)
-                            st.write("File Encrypted")
+                            # st.write("File Encrypted")
                         with col2:
                             st.download_button(
                                 label="Download Encrypted File",
