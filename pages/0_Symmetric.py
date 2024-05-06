@@ -55,19 +55,18 @@ with input_container:
                 filetype = os.path.splitext(uploaded_file.name)[-1][1:]
                 if filetype == "enc":  # If uploaded file is encrypted
                     key = bytes(st.text_area("Key:").encode())
-                    if st.button("Decrypt"):
-                        file_contents = uploaded_file.read()
-                        decrypted_file_contents = xor_decrypt(file_contents, key)
-                        st.write("File Decrypted")
-                        
-                        # Get the original file extension
-                        original_filename = uploaded_file.name[:-4]
-                        st.download_button(
-                            label="Download Decrypted File",
-                            data=bytes(decrypted_file_contents),  # Convert to bytes
-                            file_name=original_filename,
-                            mime="application/octet-stream"
-                        )
+                    # if st.button("Decrypt"):
+                    file_contents = uploaded_file.read()
+                    decrypted_file_contents = xor_decrypt(file_contents, key)
+                    
+                    # Get the original file extension
+                    original_filename = uploaded_file.name[:-4]
+                    st.download_button(
+                        label="Download Decrypted File",
+                        data=bytes(decrypted_file_contents),  # Convert to bytes
+                        file_name=original_filename,
+                        mime="application/octet-stream"
+                    )
                 else:  # If uploaded file is not encrypted
                     key = bytes(st.text_area("Key:").encode())
                     # if st.button("Encrypt"):
