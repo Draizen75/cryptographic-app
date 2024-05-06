@@ -55,7 +55,6 @@ with input_container:
                 filetype = os.path.splitext(uploaded_file.name)[-1][1:]
                 if filetype == "enc":  # If uploaded file is encrypted
                     key = bytes(st.text_area("Key:").encode())
-                    # if st.button("Decrypt"):
                     file_contents = uploaded_file.read()
                     decrypted_file_contents = xor_decrypt(file_contents, key)
                     
@@ -69,10 +68,8 @@ with input_container:
                     )
                 else:  # If uploaded file is not encrypted
                     key = bytes(st.text_area("Key:").encode())
-                    # if st.button("Encrypt"):
                     file_contents = uploaded_file.read()
                     encrypted_file_contents = xor_encrypt(file_contents, key)
-                    # st.write("File Encrypted")
                 
                     st.download_button(
                         label="Download Encrypted File",
