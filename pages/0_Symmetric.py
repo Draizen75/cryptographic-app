@@ -70,11 +70,13 @@ with input_container:
                         )
                 else:  # If uploaded file is not encrypted
                     key = bytes(st.text_area("Key:").encode())
-                    if st.button("Encrypt"):
-                        file_contents = uploaded_file.read()
-                        encrypted_file_contents = xor_encrypt(file_contents, key)
-                        st.write("File Encrypted")
-
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button("Encrypt"):
+                            file_contents = uploaded_file.read()
+                            encrypted_file_contents = xor_encrypt(file_contents, key)
+                            st.write("File Encrypted")
+                    with col2:
                         st.download_button(
                             label="Download Encrypted File",
                             data=bytes(encrypted_file_contents),  # Convert to bytes
