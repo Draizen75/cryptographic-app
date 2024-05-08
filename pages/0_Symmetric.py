@@ -134,10 +134,11 @@ elif encryption_type == "Caesar Cipher":
                     original_filename = upfile.name[:-4]
                     st.download_button(
                         label="Download Decrypted File",
-                        data=bytes(decrypted_file_contents), 
+                        data=bytes(decrypted_file_contents, 'utf-8'),  # Encode decrypted text
                         file_name=original_filename,
                         mime="application/octet-stream"
                     )
+
 
             else:
                 shift_keys = list(map(int, st.text_area("Shift Keys:").split()))
