@@ -102,8 +102,9 @@ elif encryption_type == "Caesar Cipher":
 
     def encrypt_decrypt_file(file, shift_keys, ifdecrypt):
         result = ""
-        file_contents = file.read() # Changed from file.getvalue()
-        result = encrypt_decrypt_text(file_contents, shift_keys, ifdecrypt)
+        file_contents = file.read() # Read file in binary mode
+        file_contents_decoded = file_contents.decode('utf-8')  # Decode bytes to string
+        result = encrypt_decrypt_text(file_contents_decoded, shift_keys, ifdecrypt)
         return result
 
     st.write("# Welcome To Caesar Cipher🔒🔒🔒")
@@ -134,10 +135,11 @@ elif encryption_type == "Caesar Cipher":
                     original_filename = upfile.name[:-4]
                     st.download_button(
                         label="Download Decrypted File",
-                        data=bytes(decrypted_file_contents.encode()),  # No need to convert to bytes
+                        data=bytes(decrypted_file_contents, encoding='utf-8'),  # Encode decrypted text
                         file_name=original_filename,
                         mime="application/octet-stream"
                     )
+
             else:
                 shift_keys = list(map(int, st.text_area("Shift Keys:").split()))
                 if st.button("Encrypt"):
