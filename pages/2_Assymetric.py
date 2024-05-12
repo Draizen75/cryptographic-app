@@ -30,15 +30,15 @@ if encryption_type == "RSA":
 elif encryption_type == "Diffie-Hellman":
 
     def generate_keys():
-        # Generate large prime number
+    # Generate large prime number
         p = number.getPrime(1024)
         
         # Generate primitive root modulo p
         g = number.getRandomNBitInteger(1024)
-        
+    
         while number.GCD(g, p) != 1:
             g = number.getRandomNBitInteger(1024)
-        
+    
         # Generate private key
         private_key = number.getRandomNBitInteger(1024)
         
@@ -63,30 +63,31 @@ elif encryption_type == "Diffie-Hellman":
         
         return decrypted_text
 
-    st.title("Diffie-Hellman Encryption and Decryption")
+st.title("Diffie-Hellman Encryption and Decryption")
 
-    if st.sidebar.button("Generate Keys"):
-        p, g, public_key, private_key = generate_keys()
-        st.sidebar.write("Public Key (p, g, public_key):", p, g, public_key)
-        st.sidebar.write("Private Key:", private_key)
+if st.sidebar.button("Generate Keys"):
+    p, g, public_key, private_key = generate_keys()
+    st.sidebar.write("Public Key (p, g, public_key):", p, g, public_key)
+    st.sidebar.write("Private Key:", private_key)
 
-    me_option = st.radio(
-        "Choose an option:",
-        ("Encrypt", "Decrypt")
-    )
-    if me_option == "Encrypt":
-        text = st.text_input("Enter text to encrypt:")
-        public_key = st.number_input("Enter recipient's public key:")
-        if st.button("Encrypt"):
-            shared_secret = pow(public_key, private_key, p)
-            encrypted_text = encrypt(text, shared_secret)
-            st.write("Encrypted Text:", encrypted_text)
-            
-    elif me_option == "Decrypt":
-        encrypted_text = st.text_input("Enter text to decrypt:")
-        if st.button("Decrypt"):
-            shared_secret = pow(public_key, private_key, p)
-            decrypted_text = decrypt(encrypted_text, shared_secret)
-            st.write("Decrypted Text:", decrypted_text)
+me_option = st.radio(
+    "Choose an option:",
+    ("Encrypt", "Decrypt")
+)
+if me_option == "Encrypt":
+    text = st.text_input("Enter text to encrypt:")
+    recipient_public_key = st.number_input("Enter recipient's public key:")
+    if st.button("Encrypt"):
+        shared_secret = pow(recipient_public_key, private_key, p)
+        encrypted_text = encrypt(text, shared_secret)
+        st.write("Encrypted Text:", encrypted_text)
+        
+elif me_option == "Decrypt":
+    encrypted_text = st.text_input("Enter text to decrypt:")
+    sender_public_key = st.number_input("Enter sender's public key:")
+    if st.button("Decrypt"):
+        shared_secret = pow(sender_public_key, private_key, p)
+        decrypted_text = decrypt(encrypted_text, shared_secret)
+        st.write("Decrypted Text:", decrypted_text)
 
 
