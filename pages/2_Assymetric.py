@@ -29,64 +29,57 @@ if encryption_type == "RSA":
 
 elif encryption_type == "Diffie-Hellman":
 
-    import streamlit as st
-    from Crypto.Cipher import AES
-    from Crypto.Util.Padding import pad, unpad
-    from Crypto.Random import get_random_bytes
-    from Crypto.Protocol.KDF import scrypt
-    from Crypto.Protocol import KDF
-    import hashlib
+    def modexp(b, e, m):
+        """Efficient modular exponentiation"""
+        result = 1
+        b = b % m
+        while e > 0:
+            if e % 2 == 1:
+                result = (result * b) % m
+            e = e >> 1
+            b = (b * b) % m
+        return result
 
-    def generate_public_key(g, p, private_key):
-        return (g ** private_key) % p
-
-    def generate_shared_secret(public_key, private_key, p):
-        return (public_key ** private_key) % p
-
-    def encrypt_message(message, key):
-        cipher = AES.new(key, AES.MODE_CBC)
-        ct_bytes = cipher.encrypt(pad(message.encode(), AES.block_size))
-        return ct_bytes, cipher.iv
-
-    def decrypt_message(ct_bytes, key, iv):
-        cipher = AES.new(key, AES.MODE_CBC, iv)
-        pt = unpad(cipher.decrypt(ct_bytes), AES.block_size)
-        return pt.decode()
-
-    st.title("Secure Messaging App")
-
-    p = st.number_input("Enter a prime number (p):", min_value=1, step=1)
-    g = st.number_input("Enter a primitive root of p (g):", min_value=1, step=1)
-
-    private_key_A = st.number_input("Enter private key for User A:", min_value=1, step=1)
-    private_key_B = st.number_input("Enter private key for User B:", min_value=1, step=1)
-
-    message = st.text_area("Enter your message:")
-
-    if st.button("Generate Public Keys"):
-        public_key_A = generate_public_key(g, p, private_key_A)
-        public_key_B = generate_public_key(g, p, private_key_B)
-
-        st.write("Public Key for User A:", public_key_A)
-        st.write("Public Key for User B:", public_key_B)
-
-    if st.button("Generate Shared Secret"):
-        shared_secret_A = generate_shared_secret(public_key_B, private_key_A, p)
-        shared_secret_B = generate_shared_secret(public_key_A, private_key_B, p)
-
-        if shared_secret_A == shared_secret_B:
-            st.success("Shared secret generated successfully!")
-            st.write("Shared Secret:", shared_secret_A)
+    def generate_shared_secret(p, g, a, b):
+        """Generate shared secret using Diffie-Hellman key exchange"""
+        A = modexp(g, a, p)
+        B = modexp(g, b, p)
+        secret_A = modexp(B, a, p)
+        secret_B = modexp(A, b, p)
+        if secret_A == secret_B:
+            return secret_A
         else:
-            st.error("Error generating shared secret!")
+            return None
 
-    if st.button("Encrypt Message"):
-        key = scrypt(shared_secret_A.encode(), "salt", 16, N=2**14, r=8, p=1)
-        ct_bytes, iv = encrypt_message(message, key)
-        st.write("Encrypted Message:", ct_bytes)
-        st.write("Initialization Vector (IV):", iv)
+    def encrypt(text, key):
+        """Encrypt plaintext using a key"""
+        return ''.join([chr((ord(char) + key) % 256) for char in text])
 
-    if st.button("Decrypt Message"):
-        key = scrypt(shared_secret_B.encode(), "salt", 16, N=2**14, r=8, p=1)
-        decrypted_message = decrypt_message(ct_bytes, key, iv)
-        st.write("Decrypted Message:", decrypted_message)
+    def decrypt(text, key):
+        """Decrypt ciphertext using a key"""
+        return ''.join([chr((ord(char) - key) % 256) for char in text])
+
+    st.title("Diffie-Hellman Encryption and Decryption")
+
+    p = st.number_input("Enter a prime number (p):", min_value=2, step=1)
+    g = st.number_input("Enter a generator (g):", min_value=2, step=1)
+
+    st.write("Choose private keys for Alice and Bob:")
+    a = st.number_input("Alice's private key (a):", min_value=1, step=1)
+    b = st.number_input("Bob's private key (b):", min_value=1, step=1)
+
+    shared_secret = generate_shared_secret(p, g, a, b)
+
+    if shared_secret:
+        st.write(f"Shared Secret Key: {shared_secret}")
+
+        plaintext = st.text_input("Enter the plaintext:")
+        if plaintext:
+            encrypted_text = encrypt(plaintext, shared_secret)
+            st.write(f"Encrypted text: {encrypted_text}")
+
+            decrypted_text = decrypt(encrypted_text, shared_secret)
+            st.write(f"Decrypted text: {decrypted_text}")
+
+    else:
+        st.write("Invalid private keys. Please choose different private keys.")
