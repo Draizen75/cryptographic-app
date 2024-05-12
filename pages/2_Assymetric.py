@@ -30,15 +30,15 @@ if encryption_type == "RSA":
 elif encryption_type == "Diffie-Hellman":
 
     def generate_keys():
-    # Generate large prime number
+        # Generate large prime number
         p = number.getPrime(1024)
         
         # Generate primitive root modulo p
         g = number.getRandomNBitInteger(1024)
-    
+        
         while number.GCD(g, p) != 1:
             g = number.getRandomNBitInteger(1024)
-    
+        
         # Generate private key
         private_key = number.getRandomNBitInteger(1024)
         
@@ -47,21 +47,21 @@ elif encryption_type == "Diffie-Hellman":
         
         return p, g, public_key, private_key
 
-    def encrypt(text, shared_secret):
-        # Encrypt the text
-        encrypted_text = ""
-        for char in text:
-            encrypted_text += chr((ord(char) + shared_secret) % 256)
-        
-        return encrypted_text
+def encrypt(text, shared_secret):
+    # Encrypt the text
+    encrypted_text = ""
+    for char in text:
+        encrypted_text += chr((ord(char) + shared_secret) % 256)
+    
+    return encrypted_text
 
-    def decrypt(encrypted_text, shared_secret):
-        # Decrypt the text
-        decrypted_text = ""
-        for char in encrypted_text:
-            decrypted_text += chr((ord(char) - shared_secret) % 256)
-        
-        return decrypted_text
+def decrypt(encrypted_text, shared_secret):
+    # Decrypt the text
+    decrypted_text = ""
+    for char in encrypted_text:
+        decrypted_text += chr((ord(char) - shared_secret) % 256)
+    
+    return decrypted_text
 
 st.title("Diffie-Hellman Encryption and Decryption")
 
@@ -85,8 +85,9 @@ if me_option == "Encrypt":
 elif me_option == "Decrypt":
     encrypted_text = st.text_input("Enter text to decrypt:")
     sender_public_key = st.number_input("Enter sender's public key:")
+    sender_private_key = st.number_input("Enter your private key:")
     if st.button("Decrypt"):
-        shared_secret = pow(sender_public_key, private_key, p)
+        shared_secret = pow(sender_public_key, sender_private_key, p)
         decrypted_text = decrypt(encrypted_text, shared_secret)
         st.write("Decrypted Text:", decrypted_text)
 
