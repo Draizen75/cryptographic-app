@@ -26,7 +26,7 @@ def run():
 
     st.write("# Final Project Applied Cryptography CSAC 329 Cryptographic Application! 👋")
 
-    st.write("Created by: LLOYD DRAIZEN L. MARTIREZ and Group 13")
+    st.write("Created by: Group 13")
     st.write("BSCS 3B")
 
 
