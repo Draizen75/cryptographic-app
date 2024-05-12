@@ -29,6 +29,8 @@ if encryption_type == "RSA":
 
 elif encryption_type == "Diffie-Hellman":
 
+    import streamlit as st
+
     def modexp(b, e, m):
         """Efficient modular exponentiation"""
         result = 1
@@ -77,8 +79,10 @@ elif encryption_type == "Diffie-Hellman":
         if st.button("Encrypt"):
             encrypted_text = encrypt(plaintext, shared_secret)
             st.write(f"Encrypted text: {encrypted_text}")
-
-            decrypted_text = decrypt(encrypted_text, shared_secret)
+        
+        encrypted_input = st.text_input("Enter the encrypted text:")
+        if st.button("Decrypt"):
+            decrypted_text = decrypt(encrypted_input, shared_secret)
             st.write(f"Decrypted text: {decrypted_text}")
 
     else:
