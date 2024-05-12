@@ -74,7 +74,7 @@ elif encryption_type == "Diffie-Hellman":
         st.write(f"Shared Secret Key: {shared_secret}")
 
         plaintext = st.text_input("Enter the plaintext:")
-        if plaintext:
+        if st.button("Encrypt"):
             encrypted_text = encrypt(plaintext, shared_secret)
             st.write(f"Encrypted text: {encrypted_text}")
 
