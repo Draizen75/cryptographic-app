@@ -61,8 +61,8 @@ elif encryption_type == "Diffie-Hellman":
 
     st.title("Diffie-Hellman Encryption and Decryption")
 
-    p = st.number_input("Enter a prime number (p):", min_value=2, step=1)
-    g = st.number_input("Enter a generator (g):", min_value=2, step=1)
+    p = st.sidebar.number_input("Enter a prime number (p):", min_value=2, step=1)
+    g = st.sidebar.number_input("Enter a generator (g):", min_value=2, step=1)
 
     st.write("Choose private keys for Alice and Bob:")
     a = st.number_input("Alice's private key (a):", min_value=1, step=1)
