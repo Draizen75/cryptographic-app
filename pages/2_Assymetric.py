@@ -77,9 +77,9 @@ elif encryption_type == "Diffie-Hellman":
         if st.button("Encrypt"):
             encrypted_text = encrypt(plaintext, shared_secret)
             st.write(f"Encrypted text: {encrypted_text}")
+
             decrypted_text = decrypt(encrypted_text, shared_secret)
-            if st.button("Decrypt"):
-                st.write(f"Decrypted text: {decrypted_text}")
+            st.write(f"Decrypted text: {decrypted_text}")
 
     else:
         st.write("Invalid private keys. Please choose different private keys.")
