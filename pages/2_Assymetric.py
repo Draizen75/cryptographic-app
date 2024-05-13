@@ -78,10 +78,10 @@ elif encryption_type == "Diffie-Hellman":
         plaintext = st.text_input("Enter the plaintext:")
         if st.button("Encrypt"):
             encrypted_text = encrypt(plaintext, shared_secret)
-            st.write(f"## :rainbow[Encrypted text]: {encrypted_text}")
+            st.write(f"## :green[Encrypted text]: {encrypted_text}")
             
             decrypted_text = decrypt(encrypted_text, shared_secret)
-            st.write(f"## :rainbow[Decrypted text]: {decrypted_text}")
+            st.write(f"## :red[Decrypted text]: {decrypted_text}")
 
     else:
         st.write("Invalid private keys. Please choose different private keys.")
