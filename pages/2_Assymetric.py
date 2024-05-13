@@ -7,7 +7,7 @@ st.set_page_config(
         page_icon="🏷️",
     )
 
-st.write("# Welcome To Asymmetric Encryption🔒🔒🔒")
+st.write("# :rainbow[Welcome To Asymmetric Encryption]🔒")
 
 encryption_type = st.selectbox("Select Encryption Algorithm", ["RSA", "Diffie-Hellman"])
 
