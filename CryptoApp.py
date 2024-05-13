@@ -21,7 +21,7 @@ LOGGER = get_logger(__name__)
 def run():
     st.set_page_config(
         page_title="Final Project G13",
-        page_icon="🤖",
+        page_icon="🌏",
     )
 
     st.write("# Final Project Applied Cryptography CSAC 329 Cryptographic Application! 👋")
