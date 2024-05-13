@@ -26,7 +26,7 @@ if encryption_type == "XOR Cipher":
         return xor_encrypt(ciphertext, key)  # XOR decryption is the same as encryption
 
     # Example usage:
-    st.write("# Welcome To XOR Cipher")
+    st.write("## Welcome To XOR Cipher")
     option = st.radio("Choose an option:", ("Text", "File"))
 
     if option == "Text":
