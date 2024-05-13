@@ -6,7 +6,7 @@ st.set_page_config(
         page_icon="💼",
     )
 
-st.write("# :rainbow[Welcome To Hashing]🔒")
+st.write("# Welcome To Hashing🔒")
 
 hash_type = st.selectbox("Select Hashing Algorithm", ["MD5", "SHA1", "SHA256", "SHA512"])
 option = st.radio("Choose Input Option", ("Enter Text", "Upload File"))
