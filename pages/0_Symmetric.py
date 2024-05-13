@@ -106,7 +106,7 @@ elif encryption_type == "Caesar Cipher":
         result = encrypt_decrypt_text(file_contents, shift_keys, ifdecrypt)
         return result
 
-    st.write("# Welcome To Caesar Cipher🔒🔒🔒")
+    st.write("## Welcome To Caesar Cipher🔒🔒🔒")
     option = st.radio("Choose what you want to encrypt:", ("Text", "File"))
     text = ""
     file = ""

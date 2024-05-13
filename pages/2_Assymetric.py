@@ -12,7 +12,7 @@ st.write("# :rainbow[Welcome To Asymmetric Encryption]")
 encryption_type = st.selectbox("Select Encryption Algorithm", ["RSA", "Diffie-Hellman"])
 
 if encryption_type == "RSA":
-    st.write("# Welcome To RSA Encryption")
+    st.write("## Welcome To RSA Encryption")
     publickey, privatekey = rsa.newkeys(1024)
     text = st.text_area("Enter your message: ").encode('utf8')
 
@@ -61,7 +61,7 @@ elif encryption_type == "Diffie-Hellman":
         """Decrypt ciphertext using a key"""
         return ''.join([chr((ord(char) - key) % 256) for char in text])
 
-    st.title("Diffie-Hellman Encryption and Decryption")
+    st.title("## Diffie-Hellman Encryption and Decryption")
 
     p = st.sidebar.number_input("Enter a prime number (p):", min_value=2, step=1)
     g = st.sidebar.number_input("Enter a generator (g):", min_value=2, step=1)
