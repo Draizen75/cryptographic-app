@@ -45,14 +45,14 @@ if encryption_type == "RSA":
         st.code(decrypted.decode('utf8'))
 
 elif encryption_type == "Diffie-Hellman":
-    st.sidebar.subheader("Description")
+    st.sidebar.subheader(":blue[Description]")
     if st.sidebar.checkbox("Show Description"):
         st.sidebar.write("""
         ### Diffie-Hellman Key Exchange:
         Diffie-Hellman key exchange is a method of securely exchanging cryptographic keys over a public channel. It allows two parties to generate a shared secret key without exchanging the secret key directly.
         """)
         
-    st.sidebar.subheader("Process")
+    st.sidebar.subheader(":blue[Process]")
     if st.sidebar.checkbox("Show Process"):
         st.sidebar.write("""
         #### Process:
