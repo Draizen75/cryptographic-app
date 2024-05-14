@@ -11,14 +11,14 @@ st.write("# Welcome To Symmetric Encryption")
 encryption_type = st.selectbox("Select Encryption Algorithm", ["XOR Cipher", "Caesar Cipher"])
 
 if encryption_type == "XOR Cipher":
-    st.sidebar.subheader(":green[Description]")
+    st.sidebar.subheader(":red[Description]")
     if st.sidebar.checkbox("Show Description"):
         st.sidebar.write("""
         ### XOR Cipher:
         The XOR cipher is a simple symmetric encryption algorithm. It encrypts plaintext by applying the bitwise XOR operation between each character of the plaintext and a corresponding character of the key. Decryption is the same as encryption, as XORing the ciphertext with the same key will retrieve the plaintext.
         """)
     
-    st.sidebar.subheader(":green[Process]")
+    st.sidebar.subheader(":red[Process]")
     if st.sidebar.checkbox("Show Process"):
         st.sidebar.write("""
         #### Process:
@@ -98,14 +98,14 @@ if encryption_type == "XOR Cipher":
                     )
 
 elif encryption_type == "Caesar Cipher":
-    st.sidebar.subheader("Description")
+    st.sidebar.subheader(":red[Description]")
     if st.sidebar.checkbox("Show Description"):
         st.sidebar.write("""
         ### Caesar Cipher:
         The Caesar cipher is one of the simplest and most widely known encryption techniques. It is a type of substitution cipher where each letter in the plaintext is shifted a certain number of places down or up the alphabet.
         """)
     
-    st.sidebar.subheader("Process")
+    st.sidebar.subheader(":red[Process]")
     if st.sidebar.checkbox("Show Process"):
         st.sidebar.write("""
         #### Process:
