@@ -11,6 +11,24 @@ st.write("# Welcome To Symmetric Encryption")
 encryption_type = st.selectbox("Select Encryption Algorithm", ["XOR Cipher", "Caesar Cipher"])
 
 if encryption_type == "XOR Cipher":
+    st.sidebar.subheader("Description")
+    if st.sidebar.checkbox("Show Description"):
+        st.sidebar.write("""
+        ### XOR Cipher:
+        The XOR cipher is a simple symmetric encryption algorithm. It encrypts plaintext by applying the bitwise XOR operation between each character of the plaintext and a corresponding character of the key. Decryption is the same as encryption, as XORing the ciphertext with the same key will retrieve the plaintext.
+        """)
+    
+    st.sidebar.subheader("Process")
+    if st.sidebar.checkbox("Show Process"):
+        st.sidebar.write("""
+        #### Process:
+        1. Convert the plaintext and the key to bytes.
+        2. Iterate through each byte of the plaintext.
+        3. XOR each byte of the plaintext with the corresponding byte of the key.
+        4. Append the result to the ciphertext.
+        5. Decryption is the same as encryption.
+        """)
+
     def xor_encrypt(plaintext, key):
         """Encrypts plaintext using XOR cipher with the given key."""
         ciphertext = bytearray()
@@ -80,6 +98,23 @@ if encryption_type == "XOR Cipher":
                     )
 
 elif encryption_type == "Caesar Cipher":
+    st.sidebar.subheader("Description")
+    if st.sidebar.checkbox("Show Description"):
+        st.sidebar.write("""
+        ### Caesar Cipher:
+        The Caesar cipher is one of the simplest and most widely known encryption techniques. It is a type of substitution cipher where each letter in the plaintext is shifted a certain number of places down or up the alphabet.
+        """)
+    
+    st.sidebar.subheader("Process")
+    if st.sidebar.checkbox("Show Process"):
+        st.sidebar.write("""
+        #### Process:
+        1. Convert each character of the plaintext to its ASCII value.
+        2. Shift the ASCII value by the given key value.
+        3. If the ASCII value goes beyond the printable ASCII range, wrap around.
+        4. Convert the new ASCII value back to its corresponding character.
+        """)
+
     def encrypt_decrypt_text(text, shift_keys, ifdecrypt):
 
         result = ""
