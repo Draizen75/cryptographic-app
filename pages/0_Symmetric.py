@@ -11,7 +11,7 @@ st.write("# Welcome To Symmetric Encryption")
 encryption_type = st.selectbox("Select Encryption Algorithm", ["XOR Cipher", "Caesar Cipher"])
 
 if encryption_type == "XOR Cipher":
-    st.sidebar.subheader(":gray[Description]")
+    st.sidebar.subheader(":green[Description]")
     if st.sidebar.checkbox("Show Description"):
         st.sidebar.write("""
         ### XOR Cipher:
