@@ -98,14 +98,14 @@ if encryption_type == "XOR Cipher":
                     )
 
 elif encryption_type == "Caesar Cipher":
-    st.sidebar.subheader(":red[Description]")
+    st.sidebar.subheader(":blue[Description]")
     if st.sidebar.checkbox("Show Description"):
         st.sidebar.write("""
         ### Caesar Cipher:
         The Caesar cipher is one of the simplest and most widely known encryption techniques. It is a type of substitution cipher where each letter in the plaintext is shifted a certain number of places down or up the alphabet.
         """)
     
-    st.sidebar.subheader(":red[Process]")
+    st.sidebar.subheader(":blue[Process]")
     if st.sidebar.checkbox("Show Process"):
         st.sidebar.write("""
         #### Process:
