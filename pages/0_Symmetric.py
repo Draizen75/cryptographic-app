@@ -18,7 +18,7 @@ if encryption_type == "XOR Cipher":
         The XOR cipher is a simple symmetric encryption algorithm. It encrypts plaintext by applying the bitwise XOR operation between each character of the plaintext and a corresponding character of the key. Decryption is the same as encryption, as XORing the ciphertext with the same key will retrieve the plaintext.
         """)
     
-    st.sidebar.subheader("Process")
+    st.sidebar.subheader(":green[Process]")
     if st.sidebar.checkbox("Show Process"):
         st.sidebar.write("""
         #### Process:
