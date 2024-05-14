@@ -10,7 +10,7 @@ st.write("# Welcome To Hashing🔒")
 
 hash_type = st.selectbox("Select Hashing Algorithm", ["MD5", "SHA1", "SHA256", "SHA512"])
 
-st.sidebar.subheader("Description")
+st.sidebar.subheader(":red[Description]")
 if st.sidebar.checkbox("Show Description"):
     if hash_type == "MD5":
         st.sidebar.write("""
@@ -33,7 +33,7 @@ if st.sidebar.checkbox("Show Description"):
         SHA-512 (Secure Hash Algorithm 512-bit) is a cryptographic hash function that produces a 512-bit (64-byte) hash value. It is also a part of the SHA-2 family and is more secure than SHA-256, especially for longer messages.
         """)
 
-st.sidebar.subheader("Process")
+st.sidebar.subheader(":red[Process]")
 if st.sidebar.checkbox("Show Process"):
     st.sidebar.write("""
     #### Process:

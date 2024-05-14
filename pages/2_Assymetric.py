@@ -12,14 +12,14 @@ st.write("# Welcome To Asymmetric Encryption")
 encryption_type = st.selectbox("Select Encryption Algorithm", ["RSA", "Diffie-Hellman"])
 
 if encryption_type == "RSA":
-    st.sidebar.subheader("Description")
+    st.sidebar.subheader(":red[Description]")
     if st.sidebar.checkbox("Show Description"):
         st.sidebar.write("""
         ### RSA Encryption:
         RSA (Rivest-Shamir-Adleman) is one of the first public-key cryptosystems and is widely used for secure data transmission. It involves the use of a public key for encryption and a private key for decryption.
         """)
         
-    st.sidebar.subheader("Process")
+    st.sidebar.subheader(":red[Process]")
     if st.sidebar.checkbox("Show Process"):
         st.sidebar.write("""
         #### Process:
