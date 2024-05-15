@@ -190,103 +190,114 @@ elif encryption_type == "Caesar Cipher":
 
 elif encryption_type == "AES":
     import streamlit as st
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad, unpad
-from Crypto.Random import get_random_bytes
-import base64
-import os
+    from Crypto.Cipher import AES
+    from Crypto.Util.Padding import pad, unpad
+    from Crypto.Random import get_random_bytes
+    import base64
+    import os
 
-# Function to encrypt plaintext
-def encrypt_text(plaintext, key):
-    cipher = AES.new(key, AES.MODE_CBC)
-    ciphertext = cipher.encrypt(pad(plaintext.encode(), AES.block_size))
-    return base64.b64encode(cipher.iv + ciphertext)
+    # Function to encrypt plaintext
+    def encrypt_text(plaintext, key):
+        cipher = AES.new(key, AES.MODE_CBC)
+        ciphertext = cipher.encrypt(pad(plaintext.encode(), AES.block_size))
+        return base64.b64encode(cipher.iv + ciphertext)
 
-# Function to decrypt ciphertext
-def decrypt_text(ciphertext, key):
-    ciphertext = base64.b64decode(ciphertext)
-    iv = ciphertext[:AES.block_size]
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    plaintext = unpad(cipher.decrypt(ciphertext[AES.block_size:]), AES.block_size)
-    return plaintext.decode()
+    # Function to decrypt ciphertext
+    def decrypt_text(ciphertext, key):
+        ciphertext = base64.b64decode(ciphertext)
+        iv = ciphertext[:AES.block_size]
+        cipher = AES.new(key, AES.MODE_CBC, iv)
+        plaintext = unpad(cipher.decrypt(ciphertext[AES.block_size:]), AES.block_size)
+        return plaintext.decode()
 
-# Function to encrypt file
-def encrypt_file(file, key):
-    cipher = AES.new(key, AES.MODE_CBC)
-    with open(file, "rb") as f:
-        plaintext = f.read()
-    ciphertext = cipher.iv + cipher.encrypt(pad(plaintext, AES.block_size))
-    with open(file + ".enc", "wb") as f:
-        f.write(ciphertext)
+    # Function to encrypt file
+    def encrypt_file(file, key):
+        with open(file, "rb") as f:
+            plaintext = f.read()
+        cipher = AES.new(key, AES.MODE_CBC)
+        ciphertext = cipher.iv + cipher.encrypt(pad(plaintext, AES.block_size))
+        with open(file + ".enc", "wb") as f:
+            f.write(ciphertext)
 
-# Function to decrypt file
-def decrypt_file(file, key):
-    with open(file, "rb") as f:
-        ciphertext = f.read()
-    iv = ciphertext[:AES.block_size]
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    plaintext = unpad(cipher.decrypt(ciphertext[AES.block_size:]), AES.block_size)
-    with open(os.path.splitext(file)[0], "wb") as f:
-        f.write(plaintext)
+    # Function to decrypt file
+    def decrypt_file(file, key):
+        with open(file, "rb") as f:
+            ciphertext = f.read()
+        iv = ciphertext[:AES.block_size]
+        cipher = AES.new(key, AES.MODE_CBC, iv)
+        plaintext = unpad(cipher.decrypt(ciphertext[AES.block_size:]), AES.block_size)
+        with open(os.path.splitext(file)[0], "wb") as f:
+            f.write(plaintext)
 
 
-st.title("AES Encryption and Decryption")
+    st.title("AES Encryption and Decryption")
 
-# Input plaintext
-plaintext = st.text_input("Enter plaintext:", "")
+    # Input plaintext
+    plaintext = st.text_input("Enter plaintext:", "")
 
-# Input key
-key = st.text_input("Enter encryption key (16, 24, or 32 bytes):", "")
+    # Input key
+    key = st.text_input("Enter encryption key (16, 24, or 32 bytes):", "")
 
-# Choose encryption or decryption mode
-mode = st.radio("Select mode:", ("Encrypt", "Decrypt"))
+    # Choose encryption or decryption mode
+    mode = st.radio("Select mode:", ("Encrypt", "Decrypt"))
 
-if mode == "Encrypt":
-    if st.button("Encrypt Text"):
-        if plaintext and key:
-            try:
-                ciphertext = encrypt_text(plaintext, key.encode())
-                st.success("Ciphertext: " + ciphertext.decode())
-            except Exception as e:
-                st.error(f"Encryption failed: {e}")
-        else:
-            st.warning("Please enter plaintext and encryption key.")
-
-    # File encryption
-    uploaded_file = st.file_uploader("Upload a file to encrypt:")
-    if uploaded_file is not None:
-        if st.button("Encrypt File"):
-            if key:
+    if mode == "Encrypt":
+        if st.button("Encrypt Text"):
+            if plaintext and key:
                 try:
-                    encrypt_file(uploaded_file.name, key.encode())
-                    st.success("File encrypted successfully!")
+                    ciphertext = encrypt_text(plaintext, key.encode())
+                    st.success("Ciphertext: " + ciphertext.decode())
                 except Exception as e:
                     st.error(f"Encryption failed: {e}")
             else:
-                st.warning("Please enter encryption key.")
+                st.warning("Please enter plaintext and encryption key.")
 
-elif mode == "Decrypt":
-    ciphertext = st.text_input("Enter ciphertext:", "")
-    if st.button("Decrypt Text"):
-        if ciphertext and key:
-            try:
-                plaintext = decrypt_text(ciphertext, key.encode())
-                st.success("Decrypted plaintext: " + plaintext)
-            except Exception as e:
-                st.error(f"Decryption failed: {e}")
-        else:
-            st.warning("Please enter ciphertext and decryption key.")
+        # File encryption
+        uploaded_file = st.file_uploader("Upload a file to encrypt:")
+        if uploaded_file is not None:
+            if st.button("Encrypt File"):
+                if key:
+                    try:
+                        with open("temp_file", "wb") as f:
+                            f.write(uploaded_file.getvalue())
+                        encrypt_file("temp_file", key.encode())
+                        st.success("File encrypted successfully!")
+                    except Exception as e:
+                        st.error(f"Encryption failed: {e}")
+                    finally:
+                        os.remove("temp_file")
+                else:
+                    st.warning("Please enter encryption key.")
 
-    # File decryption
-    uploaded_enc_file = st.file_uploader("Upload a .enc file to decrypt:")
-    if uploaded_enc_file is not None:
-        if st.button("Decrypt File"):
-            if key:
+    elif mode == "Decrypt":
+        ciphertext = st.text_input("Enter ciphertext:", "")
+        if st.button("Decrypt Text"):
+            if ciphertext and key:
                 try:
-                    decrypt_file(uploaded_enc_file.name, key.encode())
-                    st.success("File decrypted successfully!")
+                    plaintext = decrypt_text(ciphertext, key.encode())
+                    st.success("Decrypted plaintext: " + plaintext)
                 except Exception as e:
                     st.error(f"Decryption failed: {e}")
             else:
-                st.warning("Please enter decryption key.")
+                st.warning("Please enter ciphertext and decryption key.")
+
+        # File decryption
+        uploaded_enc_file = st.file_uploader("Upload a .enc file to decrypt:")
+        if uploaded_enc_file is not None:
+            if st.button("Decrypt File"):
+                if key:
+                    try:
+                        with open("temp_file.enc", "wb") as f:
+                            f.write(uploaded_enc_file.getvalue())
+                        decrypt_file("temp_file.enc", key.encode())
+                        st.success("File decrypted successfully!")
+                    except Exception as e:
+                        st.error(f"Decryption failed: {e}")
+                    finally:
+                        os.remove("temp_file.enc")
+                else:
+                    st.warning("Please enter decryption key.")
+
+
+
 
