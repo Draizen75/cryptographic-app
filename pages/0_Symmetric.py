@@ -1,189 +1,57 @@
 import streamlit as st
-import os
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+from Crypto.Random import get_random_bytes
+import base64
 
-st.set_page_config(
-        page_title="Symmetric Encryption",
-        page_icon="🔑",
-    )
+# Function to encrypt plaintext
+def encrypt_text(plaintext, key):
+    cipher = AES.new(key, AES.MODE_CBC)
+    ciphertext = cipher.encrypt(pad(plaintext.encode(), AES.block_size))
+    return base64.b64encode(cipher.iv + ciphertext)
 
-st.write("# Welcome To Symmetric Encryption")
+# Function to decrypt ciphertext
+def decrypt_text(ciphertext, key):
+    ciphertext = base64.b64decode(ciphertext)
+    iv = ciphertext[:AES.block_size]
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    plaintext = unpad(cipher.decrypt(ciphertext[AES.block_size:]), AES.block_size)
+    return plaintext.decode()
 
-encryption_type = st.selectbox("Select Encryption Algorithm", ["XOR Cipher", "Caesar Cipher"])
+def main():
+    st.title("AES Encryption and Decryption")
 
-if encryption_type == "XOR Cipher":
-    st.sidebar.subheader(":red[Description]")
-    if st.sidebar.checkbox("Show Description"):
-        st.sidebar.write("""
-        ### XOR Cipher:
-        The XOR cipher is a simple symmetric encryption algorithm. It encrypts plaintext by applying the bitwise XOR operation between each character of the plaintext and a corresponding character of the key. Decryption is the same as encryption, as XORing the ciphertext with the same key will retrieve the plaintext.
-        """)
-    
-    st.sidebar.subheader(":red[Process]")
-    if st.sidebar.checkbox("Show Process"):
-        st.sidebar.write("""
-        #### Process:
-        1. Convert the plaintext and the key to bytes.
-        2. Iterate through each byte of the plaintext.
-        3. XOR each byte of the plaintext with the corresponding byte of the key.
-        4. Append the result to the ciphertext.
-        5. Decryption is the same as encryption.
-        """)
+    # Input plaintext
+    plaintext = st.text_input("Enter plaintext:", "")
 
-    def xor_encrypt(plaintext, key):
-        """Encrypts plaintext using XOR cipher with the given key."""
-        ciphertext = bytearray()
-        for i in range(len(plaintext)):
-            plaintext_byte = plaintext[i]
-            key_byte = key[i % len(key)]
-            cipher_byte = plaintext_byte ^ key_byte
-            ciphertext.append(cipher_byte)
-        return ciphertext
+    # Input key
+    key = st.text_input("Enter encryption key (16, 24, or 32 bytes):", "")
 
-    def xor_decrypt(ciphertext, key):
-        """Decrypts ciphertext using XOR cipher with the given key."""
-        return xor_encrypt(ciphertext, key)  # XOR decryption is the same as encryption
+    # Choose encryption or decryption mode
+    mode = st.radio("Select mode:", ("Encrypt", "Decrypt"))
 
-    # Example usage:
-    st.write("## Welcome To XOR Cipher")
-    option = st.radio("Choose an option:", ("Text", "File"))
-
-    if option == "Text":
-        plaintext = bytes(st.text_area("Text:").encode())
-        key = bytes(st.text_area("Key:").encode())
+    if mode == "Encrypt":
         if st.button("Encrypt"):
-            col1, col2 = st.columns(2)
-            if plaintext == key:
-                st.write("Plaintext should not be equal to the key")
-            elif len(plaintext.decode()) < len(key.decode()):
-                st.write("Plaintext length should be greater than or equal to the key length")
+            if plaintext and key:
+                try:
+                    ciphertext = encrypt_text(plaintext, key.encode())
+                    st.success("Ciphertext: " + ciphertext.decode())
+                except Exception as e:
+                    st.error(f"Encryption failed: {e}")
             else:
-                with col1:
-                    encrypted_text = xor_encrypt(plaintext, key)
-                    st.write("Encrypted Text:", encrypted_text.decode())
-                with col2:
-                    decrypted_text = xor_decrypt(encrypted_text, key)
-                    st.write("Decrypted Text:", decrypted_text.decode())
+                st.warning("Please enter plaintext and encryption key.")
 
-    elif option == "File":
-        uploaded_file = st.file_uploader("Upload a file")
-        if uploaded_file is not None:
-            filetype = os.path.splitext(uploaded_file.name)[-1][1:]
-            if filetype == "enc":  # If uploaded file is encrypted
-                key = bytes(st.text_area("Key:").encode())
-                if st.button("Decrypt"):
-                    file_contents = uploaded_file.read()
-                    decrypted_file_contents = xor_decrypt(file_contents, key)
-                    st.write("File Decrypted")
-                    
-                    # Get the original file extension
-                    original_filename = uploaded_file.name[:-4]
-                    st.download_button(
-                        label="Download Decrypted File",
-                        data=bytes(decrypted_file_contents),  # Convert to bytes
-                        file_name=original_filename,
-                        mime="application/octet-stream"
-                    )
-            else:  # If uploaded file is not encrypted
-                key = bytes(st.text_area("Key:").encode())
-                if st.button("Encrypt"):
-                    file_contents = uploaded_file.read()
-                    encrypted_file_contents = xor_encrypt(file_contents, key)
-                    st.write("File Encrypted")
-            
-                    st.download_button(
-                        label="Download Encrypted File",
-                        data=bytes(encrypted_file_contents),  # Convert to bytes
-                        file_name=f"{uploaded_file.name}.enc",
-                        mime="application/octet-stream"
-                    )
-
-elif encryption_type == "Caesar Cipher":
-    st.sidebar.subheader(":blue[Description]")
-    if st.sidebar.checkbox("Show Description"):
-        st.sidebar.write("""
-        ### Caesar Cipher:
-        The Caesar cipher is one of the simplest and most widely known encryption techniques. It is a type of substitution cipher where each letter in the plaintext is shifted a certain number of places down or up the alphabet.
-        """)
-    
-    st.sidebar.subheader(":blue[Process]")
-    if st.sidebar.checkbox("Show Process"):
-        st.sidebar.write("""
-        #### Process:
-        1. Convert each character of the plaintext to its ASCII value.
-        2. Shift the ASCII value by the given key value.
-        3. If the ASCII value goes beyond the printable ASCII range, wrap around.
-        4. Convert the new ASCII value back to its corresponding character.
-        """)
-
-    def encrypt_decrypt_text(text, shift_keys, ifdecrypt):
-
-        result = ""
-        
-        for n, char in enumerate(text):
-            if isinstance(char, int):
-                result += chr(char)
+    elif mode == "Decrypt":
+        ciphertext = st.text_input("Enter ciphertext:", "")
+        if st.button("Decrypt"):
+            if ciphertext and key:
+                try:
+                    plaintext = decrypt_text(ciphertext, key.encode())
+                    st.success("Decrypted plaintext: " + plaintext)
+                except Exception as e:
+                    st.error(f"Decryption failed: {e}")
             else:
-                shift_key = shift_keys[n % len(shift_keys)] 
-                if 32 <= ord(char) <= 126:
-                    if ifdecrypt:
-                        new_char = chr((ord(char) - shift_key - 32 ) % 94 + 32)
-                    else:
-                        new_char = chr((ord(char) + shift_key - 32 ) % 94 + 32 )
-                    result += new_char
-                
-                else:
-                    result += char
-        return result
+                st.warning("Please enter ciphertext and decryption key.")
 
-    def encrypt_decrypt_file(file, shift_keys, ifdecrypt):
-        result = ""
-        file_contents = file.read()
-        result = encrypt_decrypt_text(file_contents, shift_keys, ifdecrypt)
-        return result
-
-    st.write("## Welcome To Caesar Cipher🔒🔒🔒")
-    option = st.radio("Choose what you want to encrypt:", ("Text", "File"))
-    text = ""
-    file = ""
-    if option == "Text":
-        text = st.text_area("Plaintext:")
-        shift_keys = list(map(int, st.text_area("Shift Keys:").split()))
-        if st.button("Encrypt"):
-            encrypt = encrypt_decrypt_text(text, shift_keys, ifdecrypt=False)
-            decrypt = encrypt_decrypt_text(encrypt, shift_keys, ifdecrypt=True)
-            st.write("Encrypted Text:", encrypt)
-            st.write("Decrypted text:", decrypt)
-
-
-    elif option == "File":
-        upfile = st.file_uploader("Upload a file")
-        if upfile is not None:
-            filetype = os.path.splitext(upfile.name)[-1][1:]
-            if filetype == "enc":  # If uploaded file is encrypted
-                shift_keys = list(map(int, st.text_area("Shift Keys:").split()))
-                if st.button("Decrypt"):
-                    decrypted_file_contents = encrypt_decrypt_file(upfile, shift_keys, ifdecrypt=True)
-                    st.write("File Decrypted")
-                    
-                    # Get the original file extension
-                    original_filename = upfile.name[:-4]
-                    st.download_button(
-                        label="Download Decrypted File",
-                        data=bytes(decrypted_file_contents.encode()),  # No need to convert to bytes
-                        file_name=original_filename,
-                        mime="application/octet-stream"
-                    )
-            else:
-                shift_keys = list(map(int, st.text_area("Shift Keys:").split()))
-                if st.button("Encrypt"):
-                    encrypted_file_contents = encrypt_decrypt_file(upfile, shift_keys, ifdecrypt=False)
-                    st.write("File Encrypted")
-                    
-                    # Get the original file extension
-                    
-                    st.download_button(
-                        label="Download Encrypted File",
-                        data=bytes(encrypted_file_contents.encode()),
-                        file_name=f"{upfile.name}.enc",
-                        mime="application/octet-stream"
-                    )
+if __name__ == "__main__":
+    main()
