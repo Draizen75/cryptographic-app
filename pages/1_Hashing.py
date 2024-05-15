@@ -1,69 +1,81 @@
 import streamlit as st
+import hashlib
 
-# Function to encrypt text using Caesar cipher
-def encrypt(text, shift):
-    encrypted_text = ""
-    for char in text:
-        if char.isalpha():
-            shifted = ord(char) + shift
-            if char.islower():
-                if shifted > ord('z'):
-                    shifted -= 26
-            elif char.isupper():
-                if shifted > ord('Z'):
-                    shifted -= 26
-            encrypted_text += chr(shifted)
+st.set_page_config(
+        page_title="Hashing Encryption",
+        page_icon="💼",
+    )
+
+st.write("# Welcome To Hashing🔒")
+
+hash_type = st.selectbox("Select Hashing Algorithm", ["MD5", "SHA1", "SHA256", "SHA512"])
+
+st.sidebar.subheader(":red[Description]")
+if st.sidebar.checkbox("Show Description"):
+    if hash_type == "MD5":
+        st.sidebar.write("""
+        ### MD5 Hash:
+        MD5 (Message Digest Algorithm 5) is a widely used cryptographic hash function that produces a 128-bit (16-byte) hash value. It is commonly used to verify the integrity of data. However, MD5 is not collision-resistant and is not suitable for use in cryptographic applications that rely on this property.
+        """)
+    elif hash_type == "SHA1":
+        st.sidebar.write("""
+        ### SHA1 Hash:
+        SHA-1 (Secure Hash Algorithm 1) is a cryptographic hash function that produces a 160-bit (20-byte) hash value. Like MD5, SHA-1 is also widely used to verify data integrity. However, SHA-1 is also not collision-resistant and is considered to be less secure than SHA-256 and SHA-512.
+        """)
+    elif hash_type == "SHA256":
+        st.sidebar.write("""
+        ### SHA256 Hash:
+        SHA-256 (Secure Hash Algorithm 256-bit) is a cryptographic hash function that produces a 256-bit (32-byte) hash value. It is a part of the SHA-2 family of hashing algorithms and is considered to be more secure than MD5 and SHA-1.
+        """)
+    elif hash_type == "SHA512":
+        st.sidebar.write("""
+        ### SHA512 Hash:
+        SHA-512 (Secure Hash Algorithm 512-bit) is a cryptographic hash function that produces a 512-bit (64-byte) hash value. It is also a part of the SHA-2 family and is more secure than SHA-256, especially for longer messages.
+        """)
+
+st.sidebar.subheader(":red[Process]")
+if st.sidebar.checkbox("Show Process"):
+    st.sidebar.write("""
+    #### Process:
+    1. If the input is text, encode the text using UTF-8.
+    2. Use the selected hashing algorithm to generate the hash value.
+    3. Display the hash value.
+    """)
+
+option = st.radio("Choose Input Option", ("Enter Text", "Upload File"))
+
+if option == "Enter Text":
+    user_input = st.text_area("Enter TEXT: ")
+    if st.button("Encrypt!"):
+        if hash_type == "MD5":
+            result = hashlib.md5(user_input.encode()).hexdigest()
+            st.write("MD5 Hash:", result)
+        elif hash_type == "SHA1":
+            result = hashlib.sha1(user_input.encode()).hexdigest()
+            st.write("SHA1 Hash:", result)
+        elif hash_type == "SHA256":
+            result = hashlib.sha256(user_input.encode()).hexdigest()
+            st.write("SHA256 Hash:", result)
+        elif hash_type == "SHA512":
+            result = hashlib.sha512(user_input.encode()).hexdigest()
+            st.write("SHA512 Hash:", result)
+
+elif option == "Upload File":
+    uploaded_file = st.file_uploader("Choose a file", type=None)
+    if uploaded_file is not None:
+        file_content = uploaded_file.getvalue()
+        if hash_type == "MD5":
+            result = hashlib.md5(file_content).hexdigest()
+            st.write("MD5 Hash:", result)
+        elif hash_type == "SHA1":
+            result = hashlib.sha1(file_content).hexdigest()
+            st.write("SHA1 Hash:", result)
+        elif hash_type == "SHA256":
+            result = hashlib.sha256(file_content).hexdigest()
+            st.write("SHA256 Hash:", result)
+        elif hash_type == "SHA512":
+            result = hashlib.sha512(file_content).hexdigest()
+            st.write("SHA512 Hash:", result)
         else:
-            encrypted_text += char
-    return encrypted_text
+            user_input = file_content.decode("utf-8")
 
-# Function to decrypt text using Caesar cipher
-def decrypt(text, shift):
-    decrypted_text = ""
-    for char in text:
-        if char.isalpha():
-            shifted = ord(char) - shift
-            if char.islower():
-                if shifted < ord('a'):
-                    shifted += 26
-            elif char.isupper():
-                if shifted < ord('A'):
-                    shifted += 26
-            decrypted_text += chr(shifted)
-        else:
-            decrypted_text += char
-    return decrypted_text
-
-def main():
-    st.title("Caesar Cipher Encryption and Decryption")
-    st.sidebar.title("Options")
-
-    plaintext = st.text_input("Enter text to encrypt/decrypt:")
-    file_upload = st.file_uploader("Upload a text file")
-
-    shift = st.sidebar.slider("Select shift value:", 1, 25, 3)
-
-    if plaintext:
-        st.subheader("Encrypted Text:")
-        encrypted_text = encrypt(plaintext, shift)
-        st.write(encrypted_text)
-
-        st.subheader("Decrypted Text:")
-        decrypted_text = decrypt(encrypted_text, shift)
-        st.write(decrypted_text)
-
-    if file_upload is not None:
-        file_contents = file_upload.getvalue().decode("utf-8")
-        st.subheader("File Contents:")
-        st.write(file_contents)
-
-        st.subheader("Encrypted File Contents:")
-        encrypted_file_contents = encrypt(file_contents, shift)
-        st.write(encrypted_file_contents)
-
-        st.subheader("Decrypted File Contents:")
-        decrypted_file_contents = decrypt(encrypted_file_contents, shift)
-        st.write(decrypted_file_contents)
-
-if __name__ == "__main__":
-    main()
