@@ -252,10 +252,10 @@ elif encryption_type == "AES":
 
     if option == "Text":
         # Input plaintext
-        plaintext = st.text_input("Enter plaintext:", "")
+        plaintext = st.text_area("Enter plaintext:", "")
 
         # Input key
-        key = st.text_input("Enter encryption key (16, 24, or 32 bytes):", "")
+        key = st.text_area("Enter encryption key (16, 24, or 32 bytes):", "")
 
         if st.button("Encrypt"):
             if plaintext and key:
