@@ -231,18 +231,16 @@ elif encryption_type == "AES":
 
 
     st.title("AES Encryption and Decryption")
+    option = st.radio("Choose an option:", ("Text", "File"))
 
-    # Input plaintext
-    plaintext = st.text_input("Enter plaintext:", "")
+    if option == "Text":
+        # Input plaintext
+        plaintext = st.text_input("Enter plaintext:", "")
 
-    # Input key
-    key = st.text_input("Enter encryption key (16, 24, or 32 bytes):", "")
+        # Input key
+        key = st.text_input("Enter encryption key (16, 24, or 32 bytes):", "")
 
-    # Choose encryption or decryption mode
-    mode = st.radio("Select mode:", ("Encrypt", "Decrypt"))
-
-    if mode == "Encrypt":
-        if st.button("Encrypt Text"):
+        if st.button("Encrypt"):
             if plaintext and key:
                 try:
                     ciphertext = encrypt_text(plaintext, key.encode())
@@ -252,51 +250,121 @@ elif encryption_type == "AES":
             else:
                 st.warning("Please enter plaintext and encryption key.")
 
-        # File encryption
-        uploaded_file = st.file_uploader("Upload a file to encrypt:")
-        if uploaded_file is not None:
-            if st.button("Encrypt File"):
-                if key:
+            ciphertext = st.text_input("Enter ciphertext:", "")
+            if st.button("Decrypt Text"):
+                if ciphertext and key:
                     try:
-                        with open("temp_file", "wb") as f:
-                            f.write(uploaded_file.getvalue())
-                        encrypt_file("temp_file", key.encode())
-                        st.success("File encrypted successfully!")
-                    except Exception as e:
-                        st.error(f"Encryption failed: {e}")
-                    finally:
-                        os.remove("temp_file")
-                else:
-                    st.warning("Please enter encryption key.")
-
-    elif mode == "Decrypt":
-        ciphertext = st.text_input("Enter ciphertext:", "")
-        if st.button("Decrypt Text"):
-            if ciphertext and key:
-                try:
-                    plaintext = decrypt_text(ciphertext, key.encode())
-                    st.success("Decrypted plaintext: " + plaintext)
-                except Exception as e:
-                    st.error(f"Decryption failed: {e}")
-            else:
-                st.warning("Please enter ciphertext and decryption key.")
-
-        # File decryption
-        uploaded_enc_file = st.file_uploader("Upload a .enc file to decrypt:")
-        if uploaded_enc_file is not None:
-            if st.button("Decrypt File"):
-                if key:
-                    try:
-                        with open("temp_file.enc", "wb") as f:
-                            f.write(uploaded_enc_file.getvalue())
-                        decrypt_file("temp_file.enc", key.encode())
-                        st.success("File decrypted successfully!")
+                        plaintext = decrypt_text(ciphertext, key.encode())
+                        st.success("Decrypted plaintext: " + plaintext)
                     except Exception as e:
                         st.error(f"Decryption failed: {e}")
-                    finally:
-                        os.remove("temp_file.enc")
                 else:
-                    st.warning("Please enter decryption key.")
+                    st.warning("Please enter ciphertext and decryption key.")
+        
+        elif option == "File":
+            uploaded_file = st.file_uploader("Upload a file to encrypt:")
+            if uploaded_file is not None:
+                if st.button("Encrypt File"):
+                    if key:
+                        try:
+                            with open("temp_file", "wb") as f:
+                                f.write(uploaded_file.getvalue())
+                            encrypt_file("temp_file", key.encode())
+                            st.success("File encrypted successfully!")
+                        except Exception as e:
+                            st.error(f"Encryption failed: {e}")
+                        finally:
+                            os.remove("temp_file")
+                    else:
+                        st.warning("Please enter encryption key.")
+
+                    # File decryption
+                    uploaded_enc_file = st.file_uploader("Upload a .enc file to decrypt:")
+                    if uploaded_enc_file is not None:
+                        if st.button("Decrypt File"):
+                            if key:
+                                try:
+                                    with open("temp_file.enc", "wb") as f:
+                                        f.write(uploaded_enc_file.getvalue())
+                                    decrypt_file("temp_file.enc", key.encode())
+                                    st.success("File decrypted successfully!")
+                                except Exception as e:
+                                    st.error(f"Decryption failed: {e}")
+                                finally:
+                                    os.remove("temp_file.enc")
+                            else:
+                                st.warning("Please enter decryption key.")
+
+    # # Choose encryption or decryption mode
+    # mode = st.radio("Select mode:", ("Encrypt", "Decrypt"))
+
+    # if mode == "Encrypt":
+    #     if st.button("Encrypt Text"):
+    #         if plaintext and key:
+    #             try:
+    #                 ciphertext = encrypt_text(plaintext, key.encode())
+    #                 st.success("Ciphertext: " + ciphertext.decode())
+    #             except Exception as e:
+    #                 st.error(f"Encryption failed: {e}")
+    #         else:
+    #             st.warning("Please enter plaintext and encryption key.")
+
+    #         ciphertext = st.text_input("Enter ciphertext:", "")
+    #         if st.button("Decrypt Text"):
+    #             if ciphertext and key:
+    #                 try:
+    #                     plaintext = decrypt_text(ciphertext, key.encode())
+    #                     st.success("Decrypted plaintext: " + plaintext)
+    #                 except Exception as e:
+    #                     st.error(f"Decryption failed: {e}")
+    #             else:
+    #                 st.warning("Please enter ciphertext and decryption key.")
+
+    #     # File encryption
+    #     uploaded_file = st.file_uploader("Upload a file to encrypt:")
+    #     if uploaded_file is not None:
+    #         if st.button("Encrypt File"):
+    #             if key:
+    #                 try:
+    #                     with open("temp_file", "wb") as f:
+    #                         f.write(uploaded_file.getvalue())
+    #                     encrypt_file("temp_file", key.encode())
+    #                     st.success("File encrypted successfully!")
+    #                 except Exception as e:
+    #                     st.error(f"Encryption failed: {e}")
+    #                 finally:
+    #                     os.remove("temp_file")
+    #             else:
+    #                 st.warning("Please enter encryption key.")
+
+    # elif mode == "Decrypt":
+    #     ciphertext = st.text_input("Enter ciphertext:", "")
+    #     if st.button("Decrypt Text"):
+    #         if ciphertext and key:
+    #             try:
+    #                 plaintext = decrypt_text(ciphertext, key.encode())
+    #                 st.success("Decrypted plaintext: " + plaintext)
+    #             except Exception as e:
+    #                 st.error(f"Decryption failed: {e}")
+    #         else:
+    #             st.warning("Please enter ciphertext and decryption key.")
+
+    #     # File decryption
+    #     uploaded_enc_file = st.file_uploader("Upload a .enc file to decrypt:")
+    #     if uploaded_enc_file is not None:
+    #         if st.button("Decrypt File"):
+    #             if key:
+    #                 try:
+    #                     with open("temp_file.enc", "wb") as f:
+    #                         f.write(uploaded_enc_file.getvalue())
+    #                     decrypt_file("temp_file.enc", key.encode())
+    #                     st.success("File decrypted successfully!")
+    #                 except Exception as e:
+    #                     st.error(f"Decryption failed: {e}")
+    #                 finally:
+    #                     os.remove("temp_file.enc")
+    #             else:
+    #                 st.warning("Please enter decryption key.")
 
 
 
