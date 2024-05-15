@@ -62,10 +62,10 @@ if encryption_type == "XOR Cipher":
             else:
                 with col1:
                     encrypted_text = xor_encrypt(plaintext, key)
-                    st.write("Encrypted Text:", encrypted_text.decode())
+                    st.success("Encrypted Text:", encrypted_text.decode())
                 with col2:
                     decrypted_text = xor_decrypt(encrypted_text, key)
-                    st.write("Decrypted Text:", decrypted_text.decode())
+                    st.success("Decrypted Text:", decrypted_text.decode())
 
     elif option == "File":
         uploaded_file = st.file_uploader("Upload a file")
@@ -154,8 +154,8 @@ elif encryption_type == "Caesar Cipher":
         if st.button("Encrypt"):
             encrypt = encrypt_decrypt_text(text, shift_keys, ifdecrypt=False)
             decrypt = encrypt_decrypt_text(encrypt, shift_keys, ifdecrypt=True)
-            st.write("Encrypted Text:", encrypt)
-            st.write("Decrypted text:", decrypt)
+            st.success("Encrypted Text:", encrypt)
+            st.success("Decrypted text:", decrypt)
 
 
     elif option == "File":
