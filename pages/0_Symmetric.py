@@ -231,6 +231,23 @@ elif encryption_type == "AES":
         return decrypted_file_path
 
     st.title("AES Encryption and Decryption")
+
+    st.sidebar.subheader(":red[Description]")
+    if st.sidebar.checkbox("Show Description"):
+        st.sidebar.write("""
+        ### AES Encryption:
+        Advanced Encryption Standard (AES) is a symmetric encryption algorithm that is widely used to secure sensitive data. It supports key lengths of 128, 192, and 256 bits. AES is commonly used to encrypt and decrypt data securely.
+        """)
+
+    st.sidebar.subheader(":red[Process]")
+    if st.sidebar.checkbox("Show Process"):
+        st.sidebar.write("""
+        #### Process:
+        1. Choose a key with a length of 16, 24, or 32 bytes.
+        2. Enter plaintext for encryption or ciphertext for decryption.
+        3. Encrypt or decrypt the text using AES algorithm.
+        """)
+
     option = st.radio("Choose an option:", ("Text", "File"))
 
     if option == "Text":
