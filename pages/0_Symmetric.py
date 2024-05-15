@@ -274,13 +274,13 @@ elif encryption_type == "AES":
                         try:
                             with open("temp_file", "wb") as f:
                                 f.write(uploaded_file.getvalue())
-                            decrypted_file_path = decrypt_file(uploaded_file.name[:-4], key.encode())
+                            decrypted_file_path = decrypt_file("temp_file", key.encode())
                             st.success("File decrypted successfully!")
 
                             st.download_button(
                                 label="Download Decrypted File",
                                 data=open(decrypted_file_path, "rb").read(),
-                                file_name=os.path.basename(decrypted_file_path),
+                                file_name=os.path.basename(uploaded_file.name)[:-4],
                                 mime="application/octet-stream"
                             )
                         except Exception as e:
@@ -302,7 +302,7 @@ elif encryption_type == "AES":
                             st.download_button(
                                 label="Download Encrypted File",
                                 data=open(encrypted_file_path, "rb").read(),
-                                file_name=os.path.basename(encrypted_file_path),
+                                file_name=os.path.basename(uploaded_file.name) + ".enc",
                                 mime="application/octet-stream"
                             )
                         except Exception as e:
@@ -311,3 +311,4 @@ elif encryption_type == "AES":
                             os.remove("temp_file")
                     else:
                         st.warning("Please enter encryption key.")
+
