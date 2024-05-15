@@ -264,41 +264,50 @@ elif encryption_type == "AES":
                 st.warning("Please enter ciphertext and decryption key.")
 
     elif option == "File":
-        uploaded_file = st.file_uploader("Upload a file to encrypt:")
+        uploaded_file = st.file_uploader("Upload a file")
         if uploaded_file is not None:
-            if st.button("Encrypt File"):
-                key = st.text_input("Enter encryption key (16, 24, or 32 bytes):", "")
-                if key:
-                    try:
-                        encrypted_file_path = encrypt_file(uploaded_file.name, key.encode())
-                        st.success("File encrypted successfully!")
-                        st.download_button(
-                            label="Download Encrypted File",
-                            data=open(encrypted_file_path, "rb").read(),
-                            file_name=os.path.basename(encrypted_file_path),
-                            mime="application/octet-stream"
-                        )
-                    except Exception as e:
-                        st.error(f"Encryption failed: {e}")
-                else:
-                    st.warning("Please enter encryption key.")
-
-        # File decryption
-        uploaded_enc_file = st.file_uploader("Upload a .enc file to decrypt:")
-        if uploaded_enc_file is not None:
-            if st.button("Decrypt File"):
+            filetype = os.path.splitext(uploaded_file.name)[-1][1:]
+            if filetype == "enc":  # If uploaded file is encrypted
                 key = st.text_input("Enter decryption key (16, 24, or 32 bytes):", "")
-                if key:
-                    try:
-                        decrypted_file_path = decrypt_file(uploaded_enc_file.name, key.encode())
-                        st.success("File decrypted successfully!")
-                        st.download_button(
-                            label="Download Decrypted File",
-                            data=open(decrypted_file_path, "rb").read(),
-                            file_name=os.path.basename(decrypted_file_path),
-                            mime="application/octet-stream"
-                        )
-                    except Exception as e:
-                        st.error(f"Decryption failed: {e}")
-                else:
-                    st.warning("Please enter decryption key.")
+                if st.button("Decrypt"):
+                    if key:
+                        try:
+                            with open("temp_file", "wb") as f:
+                                f.write(uploaded_file.getvalue())
+                            decrypted_file_path = decrypt_file("temp_file", key.encode())
+                            st.success("File decrypted successfully!")
+
+                            st.download_button(
+                                label="Download Decrypted File",
+                                data=open(decrypted_file_path, "rb").read(),
+                                file_name=os.path.basename(decrypted_file_path),
+                                mime="application/octet-stream"
+                            )
+                        except Exception as e:
+                            st.error(f"Decryption failed: {e}")
+                        finally:
+                            os.remove("temp_file")
+                    else:
+                        st.warning("Please enter decryption key.")
+            else:  # If uploaded file is not encrypted
+                key = st.text_input("Enter encryption key (16, 24, or 32 bytes):", "")
+                if st.button("Encrypt"):
+                    if key:
+                        try:
+                            with open("temp_file", "wb") as f:
+                                f.write(uploaded_file.getvalue())
+                            encrypted_file_path = encrypt_file("temp_file", key.encode())
+                            st.success("File encrypted successfully!")
+
+                            st.download_button(
+                                label="Download Encrypted File",
+                                data=open(encrypted_file_path, "rb").read(),
+                                file_name=os.path.basename(encrypted_file_path),
+                                mime="application/octet-stream"
+                            )
+                        except Exception as e:
+                            st.error(f"Encryption failed: {e}")
+                        finally:
+                            os.remove("temp_file")
+                    else:
+                        st.warning("Please enter encryption key.")
