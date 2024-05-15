@@ -1,4 +1,7 @@
 import streamlit as st
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import base64
 import os
 
 st.set_page_config(
@@ -189,11 +192,6 @@ elif encryption_type == "Caesar Cipher":
                     )
 
 elif encryption_type == "AES":
-    import streamlit as st
-    from Crypto.Cipher import AES
-    from Crypto.Util.Padding import pad, unpad
-    import base64
-    import os
 
     # Function to encrypt plaintext
     def encrypt_text(plaintext, key):
