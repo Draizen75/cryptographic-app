@@ -65,7 +65,7 @@ if encryption_type == "XOR Cipher":
                     st.success("Encrypted Text:" + encrypted_text.decode())
                 with col2:
                     decrypted_text = xor_decrypt(encrypted_text, key)
-                    st.success("Decrypted Text:" + decrypted_text.decode())
+                    st.success("Decrypted Text:" + decrypted_text)
 
     elif option == "File":
         uploaded_file = st.file_uploader("Upload a file")
