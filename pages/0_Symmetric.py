@@ -274,7 +274,7 @@ elif encryption_type == "AES":
                         try:
                             with open("temp_file", "wb") as f:
                                 f.write(uploaded_file.getvalue())
-                            decrypted_file_path = decrypt_file("temp_file", key.encode())
+                            decrypted_file_path = decrypt_file(uploaded_file.name[:-4], key.encode())
                             st.success("File decrypted successfully!")
 
                             st.download_button(
