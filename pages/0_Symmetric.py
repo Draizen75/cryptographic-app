@@ -64,7 +64,7 @@ if encryption_type == "XOR Cipher":
                     encrypted_text = xor_encrypt(plaintext, key)
                     st.success("Encrypted Text:" + encrypted_text.decode())
                 with col2:
-                    decrypted_text = xor_decrypt(encrypted_text, key.encode())
+                    decrypted_text = xor_decrypt(encrypted_text, key)
                     st.success("Decrypted Text:" + decrypted_text.decode())
 
     elif option == "File":
