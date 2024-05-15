@@ -119,9 +119,7 @@ elif encryption_type == "Caesar Cipher":
         """)
 
     def encrypt_decrypt_text(text, shift_keys, ifdecrypt):
-
         result = ""
-        
         for n, char in enumerate(text):
             if isinstance(char, int):
                 result += chr(char)
@@ -129,20 +127,19 @@ elif encryption_type == "Caesar Cipher":
                 shift_key = shift_keys[n % len(shift_keys)] 
                 if 32 <= ord(char) <= 126:
                     if ifdecrypt:
-                        new_char = chr((ord(char) - shift_key - 32 ) % 94 + 32)
+                        new_char = chr((ord(char) - shift_key - 32) % 94 + 32)
                     else:
-                        new_char = chr((ord(char) + shift_key - 32 ) % 94 + 32 )
+                        new_char = chr((ord(char) + shift_key - 32) % 94 + 32)
                     result += new_char
-                
                 else:
                     result += char
         return result
 
     def encrypt_decrypt_file(file, shift_keys, ifdecrypt):
         result = ""
-        file_contents = file.read()
+        file_contents = file.read().decode()
         result = encrypt_decrypt_text(file_contents, shift_keys, ifdecrypt)
-        return result
+        return result.encode()
 
     st.write("## Welcome To Caesar Cipher🔒🔒🔒")
     option = st.radio("Choose what you want to encrypt:", ("Text", "File"))
@@ -156,7 +153,6 @@ elif encryption_type == "Caesar Cipher":
             decrypt = encrypt_decrypt_text(encrypt, shift_keys, ifdecrypt=True)
             st.write("Encrypted Text:", encrypt)
             st.write("Decrypted text:", decrypt)
-
 
     elif option == "File":
         upfile = st.file_uploader("Upload a file")
@@ -172,7 +168,7 @@ elif encryption_type == "Caesar Cipher":
                     original_filename = upfile.name[:-4]
                     st.download_button(
                         label="Download Decrypted File",
-                        data=bytes(decrypted_file_contents.encode()),  # No need to convert to bytes
+                        data=decrypted_file_contents,  # No need to convert to bytes
                         file_name=original_filename,
                         mime="application/octet-stream"
                     )
@@ -186,7 +182,7 @@ elif encryption_type == "Caesar Cipher":
                     
                     st.download_button(
                         label="Download Encrypted File",
-                        data=bytes(encrypted_file_contents.encode()),
+                        data=encrypted_file_contents,
                         file_name=f"{upfile.name}.enc",
                         mime="application/octet-stream"
                     )
