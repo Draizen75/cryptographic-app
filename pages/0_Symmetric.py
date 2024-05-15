@@ -193,13 +193,13 @@ elif encryption_type == "Caesar Cipher":
 
 elif encryption_type == "AES":
 
-    # Function to encrypt plaintext
+    #  encrypt plaintext
     def encrypt_text(plaintext, key):
         cipher = AES.new(key, AES.MODE_CBC)
         ciphertext = cipher.encrypt(pad(plaintext.encode(), AES.block_size))
         return base64.b64encode(cipher.iv + ciphertext)
 
-    # Function to decrypt ciphertext
+    #  decrypt ciphertext
     def decrypt_text(ciphertext, key):
         ciphertext = base64.b64decode(ciphertext)
         iv = ciphertext[:AES.block_size]
@@ -207,7 +207,7 @@ elif encryption_type == "AES":
         plaintext = unpad(cipher.decrypt(ciphertext[AES.block_size:]), AES.block_size)
         return plaintext.decode()
 
-    # Function to encrypt file
+    #  encrypt file
     def encrypt_file(file, key):
         with open(file, "rb") as f:
             plaintext = f.read()
@@ -218,7 +218,7 @@ elif encryption_type == "AES":
             f.write(ciphertext)
         return encrypted_file_path
 
-    # Function to decrypt file
+    #  decrypt file
     def decrypt_file(file, key):
         with open(file, "rb") as f:
             ciphertext = f.read()
@@ -230,7 +230,7 @@ elif encryption_type == "AES":
             f.write(plaintext)
         return decrypted_file_path
 
-    st.title("AES Encryption and Decryption")
+    st.write("## AES Encryption and Decryption")
 
     st.sidebar.subheader(":red[Description]")
     if st.sidebar.checkbox("Show Description"):
