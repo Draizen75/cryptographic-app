@@ -136,9 +136,9 @@ elif encryption_type == "Caesar Cipher":
         return result
 
     def encrypt_decrypt_file(file, shift_keys, ifdecrypt):
-        result = ""
-        file_contents = file.read().decode()
-        result = encrypt_decrypt_text(file_contents, shift_keys, ifdecrypt)
+        result = b""
+        file_contents = file.read()
+        result = encrypt_decrypt_text(file_contents.decode(), shift_keys, ifdecrypt)
         return result.encode()
 
     st.write("## Welcome To Caesar Cipher🔒🔒🔒")
