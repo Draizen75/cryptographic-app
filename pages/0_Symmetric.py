@@ -250,16 +250,16 @@ elif encryption_type == "AES":
             else:
                 st.warning("Please enter plaintext and encryption key.")
 
-            ciphertext = st.text_input("Enter ciphertext:", "")
-            if st.button("Decrypt Text"):
-                if ciphertext and key:
-                    try:
-                        plaintext = decrypt_text(ciphertext, key.encode())
-                        st.success("Decrypted plaintext: " + plaintext)
-                    except Exception as e:
-                        st.error(f"Decryption failed: {e}")
-                else:
-                    st.warning("Please enter ciphertext and decryption key.")
+        ciphertext = st.text_input("Enter ciphertext:", "")
+        if st.button("Decrypt Text"):
+            if ciphertext and key:
+                try:
+                    plaintext = decrypt_text(ciphertext, key.encode())
+                    st.success("Decrypted plaintext: " + plaintext)
+                except Exception as e:
+                    st.error(f"Decryption failed: {e}")
+            else:
+                st.warning("Please enter ciphertext and decryption key.")
         
         elif option == "File":
             uploaded_file = st.file_uploader("Upload a file to encrypt:")
