@@ -33,6 +33,10 @@ and authenticity. The application will provide a user-friendly interface that al
 decrypt and hash messages/file using different cryptographic algorithms.""")
 
     st.write("Created by: Group 13")
+    st.write("""Members:
+                Lloyd Draizen L. Martirez
+                Rodney S.R. Celetaria
+                Mary Grace B. Hertez""")
     st.write("BSCS 3B")
 
 
