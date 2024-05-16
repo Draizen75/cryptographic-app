@@ -1,4 +1,4 @@
-# this is our Final Project in Applied Cryptography
+# This is our Final Project in Applied Cryptography
 
 Members:
 Lloyd Draizen L. Martirez
