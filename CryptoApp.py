@@ -26,6 +26,12 @@ def run():
 
     st.write("# Final Project Applied Cryptography CSAC 329 Cryptographic Application! 👋")
 
+    st.write("""The Applied Cryptography Application project aims to develop a simple application that 
+implements various cryptographic techniques to secure communication, data, and information exchange. 
+Cryptography is the science of encoding and decoding messages to protect their confidentiality, integrity, 
+and authenticity. The application will provide a user-friendly interface that allows users to encrypt, 
+decrypt and hash messages/file using different cryptographic algorithms.""")
+
     st.write("Created by: Group 13")
     st.write("BSCS 3B")
 
